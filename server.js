@@ -1,9 +1,19 @@
 const http = require('http');
-const server = http.createServer((res,req)=>{
-    req.writeHead(200,{'content-type':'text/html'});
-    req.end("<h1>hello world</h1>");
-});
+const fs = require('fs');
+const { error } = require('console');
 
-server.listen(3000,()=>{
+const server = http.createServer((req,res)=>{
+    fs.readFile("./message.txt",'utf-8',(error,data)=>{
+        if (error){
+            res.writeHead(500,{"Cotent-Type":"text/plain"});
+            res.end("error");
+            console.error(error);
+        }else{
+            res.writeHead(200,{"Content-Type":"text/html"});
+            res.end(`<p>${data}</p>`);
+        }
+
+    });
+});server.listen(3000,()=>{
     console.log("the server is runnnig on http://localhost:3000");
 });
